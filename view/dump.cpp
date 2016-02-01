@@ -1,5 +1,5 @@
-#include "Dump.h"
-void dump_16(const char *buffer,int start, int finish){
+#include "dump.h"
+void dump_16(const unsigned char *buffer,int start, int finish){
     int i;
     if(finish>start + 16) finish = start + 16;
     for(i=start;i<finish;i++){

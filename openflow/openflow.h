@@ -22,14 +22,14 @@
 #include "openvswitch/types.h"
 
 #ifdef SWIG
-#define OFP_ASSERT(EXPR)        /* SWIG can't handle OFP_ASSERT. */
+#define //OFP_ASSERT(EXPR)        /* SWIG can't handle //OFP_ASSERT. */
 #elif !defined(__cplusplus)
 /* Build-time assertion for use in a declaration context. */
 #define OFP_ASSERT(EXPR)                                                \
         extern int (*build_assert(void))[ sizeof(struct {               \
                     unsigned int build_assert_failed : (EXPR) ? 1 : -1; })]
 #else /* __cplusplus */
-#include <boost/static_assert.hpp>
+//#include <boost/static_assert.hpp>
 #define OFP_ASSERT BOOST_STATIC_ASSERT
 #endif /* __cplusplus */
 
@@ -119,7 +119,7 @@ struct ofp_header {
                            Replies use the same id as was in the request
                            to facilitate pairing. */
 };
-OFP_ASSERT(sizeof(struct ofp_header) == 8);
+//OFP_ASSERT(sizeof(struct ofp_header) == 8);
 
 /* OFPT_HELLO.  This message has an empty body, but implementations must
  * ignore any data included in the body, to allow for future extensions. */
@@ -145,7 +145,7 @@ struct ofp_switch_config {
     ovs_be16 miss_send_len;     /* Max bytes of new flow that datapath should
                                    send to the controller. */
 };
-OFP_ASSERT(sizeof(struct ofp_switch_config) == 12);
+//OFP_ASSERT(sizeof(struct ofp_switch_config) == 12);
 
 /* Capabilities supported by the datapath. */
 enum ofp_capabilities {
@@ -225,7 +225,7 @@ struct ofp_phy_port {
     ovs_be32 supported;     /* Features supported by the port. */
     ovs_be32 peer;          /* Features advertised by peer. */
 };
-OFP_ASSERT(sizeof(struct ofp_phy_port) == 48);
+//OFP_ASSERT(sizeof(struct ofp_phy_port) == 48);
 
 /* Switch features. */
 struct ofp_switch_features {
@@ -248,7 +248,7 @@ struct ofp_switch_features {
                                       is inferred from the length field in
                                       the header. */
 };
-OFP_ASSERT(sizeof(struct ofp_switch_features) == 32);
+//OFP_ASSERT(sizeof(struct ofp_switch_features) == 32);
 
 /* What changed about the physical port */
 enum ofp_port_reason {
@@ -264,7 +264,7 @@ struct ofp_port_status {
     uint8_t pad[7];          /* Align to 64-bits. */
     struct ofp_phy_port desc;
 };
-OFP_ASSERT(sizeof(struct ofp_port_status) == 64);
+//OFP_ASSERT(sizeof(struct ofp_port_status) == 64);
 
 /* Modify behavior of the physical port */
 struct ofp_port_mod {
@@ -283,7 +283,7 @@ struct ofp_port_mod {
                                bits to prevent any action taking place. */
     uint8_t pad[4];         /* Pad to 64-bits. */
 };
-OFP_ASSERT(sizeof(struct ofp_port_mod) == 32);
+//OFP_ASSERT(sizeof(struct ofp_port_mod) == 32);
 
 /* Why is this packet being sent to the controller? */
 enum ofp_packet_in_reason {
@@ -306,7 +306,7 @@ struct ofp_packet_in {
                                offsetof(struct ofp_packet_in, data) ==
                                sizeof(struct ofp_packet_in) - 2. */
 };
-OFP_ASSERT(sizeof(struct ofp_packet_in) == 20);
+//OFP_ASSERT(sizeof(struct ofp_packet_in) == 20);
 
 enum ofp_action_type {
     OFPAT_OUTPUT,           /* Output to switch port. */
@@ -334,7 +334,7 @@ struct ofp_action_output {
     ovs_be16 port;                  /* Output port. */
     ovs_be16 max_len;               /* Max length to send to controller. */
 };
-OFP_ASSERT(sizeof(struct ofp_action_output) == 8);
+//OFP_ASSERT(sizeof(struct ofp_action_output) == 8);
 
 /* The VLAN id is 12 bits, so we can use the entire 16 bits to indicate
  * special conditions.  All ones is used to match that no VLAN id was
@@ -348,7 +348,7 @@ struct ofp_action_vlan_vid {
     ovs_be16 vlan_vid;              /* VLAN id. */
     uint8_t pad[2];
 };
-OFP_ASSERT(sizeof(struct ofp_action_vlan_vid) == 8);
+//OFP_ASSERT(sizeof(struct ofp_action_vlan_vid) == 8);
 
 /* Action structure for OFPAT_SET_VLAN_PCP. */
 struct ofp_action_vlan_pcp {
@@ -357,7 +357,7 @@ struct ofp_action_vlan_pcp {
     uint8_t vlan_pcp;               /* VLAN priority. */
     uint8_t pad[3];
 };
-OFP_ASSERT(sizeof(struct ofp_action_vlan_pcp) == 8);
+//OFP_ASSERT(sizeof(struct ofp_action_vlan_pcp) == 8);
 
 /* Action structure for OFPAT_SET_DL_SRC/DST. */
 struct ofp_action_dl_addr {
@@ -366,7 +366,7 @@ struct ofp_action_dl_addr {
     uint8_t dl_addr[OFP_ETH_ALEN];  /* Ethernet address. */
     uint8_t pad[6];
 };
-OFP_ASSERT(sizeof(struct ofp_action_dl_addr) == 16);
+//OFP_ASSERT(sizeof(struct ofp_action_dl_addr) == 16);
 
 /* Action structure for OFPAT_SET_NW_SRC/DST. */
 struct ofp_action_nw_addr {
@@ -374,7 +374,7 @@ struct ofp_action_nw_addr {
     ovs_be16 len;                   /* Length is 8. */
     ovs_be32 nw_addr;               /* IP address. */
 };
-OFP_ASSERT(sizeof(struct ofp_action_nw_addr) == 8);
+//OFP_ASSERT(sizeof(struct ofp_action_nw_addr) == 8);
 
 /* Action structure for OFPAT_SET_NW_TOS. */
 struct ofp_action_nw_tos {
@@ -383,7 +383,7 @@ struct ofp_action_nw_tos {
     uint8_t nw_tos;                 /* IP TOS (DSCP field, 6 bits). */
     uint8_t pad[3];
 };
-OFP_ASSERT(sizeof(struct ofp_action_nw_tos) == 8);
+//OFP_ASSERT(sizeof(struct ofp_action_nw_tos) == 8);
 
 /* Action structure for OFPAT_SET_TP_SRC/DST. */
 struct ofp_action_tp_port {
@@ -392,7 +392,7 @@ struct ofp_action_tp_port {
     ovs_be16 tp_port;               /* TCP/UDP port. */
     uint8_t pad[2];
 };
-OFP_ASSERT(sizeof(struct ofp_action_tp_port) == 8);
+//OFP_ASSERT(sizeof(struct ofp_action_tp_port) == 8);
 
 /* Action header for OFPAT_VENDOR. The rest of the body is vendor-defined. */
 struct ofp_action_vendor_header {
@@ -401,7 +401,7 @@ struct ofp_action_vendor_header {
     ovs_be32 vendor;                /* Vendor ID, which takes the same form
                                        as in "struct ofp_vendor_header". */
 };
-OFP_ASSERT(sizeof(struct ofp_action_vendor_header) == 8);
+//OFP_ASSERT(sizeof(struct ofp_action_vendor_header) == 8);
 
 /* Action header that is common to all actions.  The length includes the
  * header and any padding used to make the action 64-bit aligned.
@@ -414,7 +414,7 @@ struct ofp_action_header {
                                        64-bit aligned. */
     uint8_t pad[4];
 };
-OFP_ASSERT(sizeof(struct ofp_action_header) == 8);
+//OFP_ASSERT(sizeof(struct ofp_action_header) == 8);
 
 /* OFPAT_ENQUEUE action struct: send packets to given queue on port. */
 struct ofp_action_enqueue {
@@ -426,7 +426,7 @@ struct ofp_action_enqueue {
     uint8_t pad[6];           /* Pad for 64-bit alignment. */
     ovs_be32 queue_id;        /* Where to enqueue the packets. */
 };
-OFP_ASSERT(sizeof(struct ofp_action_enqueue) == 16);
+//OFP_ASSERT(sizeof(struct ofp_action_enqueue) == 16);
 
 union ofp_action {
     ovs_be16 type;
@@ -439,7 +439,7 @@ union ofp_action {
     struct ofp_action_nw_tos nw_tos;
     struct ofp_action_tp_port tp_port;
 };
-OFP_ASSERT(sizeof(union ofp_action) == 8);
+//OFP_ASSERT(sizeof(union ofp_action) == 8);
 
 /* Send packet (controller -> datapath). */
 struct ofp_packet_out {
@@ -452,7 +452,7 @@ struct ofp_packet_out {
                                      from the length field in the header.
                                      (Only meaningful if buffer_id == -1.) */
 };
-OFP_ASSERT(sizeof(struct ofp_packet_out) == 16);
+//OFP_ASSERT(sizeof(struct ofp_packet_out) == 16);
 
 enum ofp_flow_mod_command {
     OFPFC_ADD,              /* New flow. */
@@ -535,7 +535,7 @@ struct ofp_match {
     ovs_be16 tp_src;           /* TCP/UDP source port. */
     ovs_be16 tp_dst;           /* TCP/UDP destination port. */
 };
-OFP_ASSERT(sizeof(struct ofp_match) == 40);
+//OFP_ASSERT(sizeof(struct ofp_match) == 40);
 
 /* Value used in "idle_timeout" and "hard_timeout" to indicate that the entry
  * is permanent. */
@@ -573,7 +573,7 @@ struct ofp_flow_mod {
                                             from the length field in the
                                             header. */
 };
-OFP_ASSERT(sizeof(struct ofp_flow_mod) == 72);
+//OFP_ASSERT(sizeof(struct ofp_flow_mod) == 72);
 
 /* Why was this flow removed? */
 enum ofp_flow_removed_reason {
@@ -600,7 +600,7 @@ struct ofp_flow_removed {
     ovs_be64 packet_count;
     ovs_be64 byte_count;
 };
-OFP_ASSERT(sizeof(struct ofp_flow_removed) == 88);
+//OFP_ASSERT(sizeof(struct ofp_flow_removed) == 88);
 
 /* Values for 'type' in ofp_error_message.  These values are immutable: they
  * will not change in future versions of the protocol (although new values may
@@ -688,7 +688,7 @@ struct ofp_error_msg {
     uint8_t data[0];          /* Variable-length data.  Interpreted based
                                  on the type and code. */
 };
-OFP_ASSERT(sizeof(struct ofp_error_msg) == 12);
+//OFP_ASSERT(sizeof(struct ofp_error_msg) == 12);
 
 enum ofp_stats_types {
     /* Description of this OpenFlow switch.
@@ -733,7 +733,7 @@ struct ofp_stats_msg {
     ovs_be16 flags;             /* Requests: always 0.
                                  * Replies: 0 or OFPSF_REPLY_MORE. */
 };
-OFP_ASSERT(sizeof(struct ofp_stats_msg) == 12);
+//OFP_ASSERT(sizeof(struct ofp_stats_msg) == 12);
 
 enum ofp_stats_reply_flags {
     OFPSF_REPLY_MORE  = 1 << 0  /* More replies to follow. */
@@ -752,7 +752,7 @@ struct ofp_desc_stats {
     char dp_desc[DESC_STR_LEN];        /* Human readable description of
                                           the datapath. */
 };
-OFP_ASSERT(sizeof(struct ofp_desc_stats) == 1068);
+//OFP_ASSERT(sizeof(struct ofp_desc_stats) == 1068);
 
 /* Stats request of type OFPST_AGGREGATE or OFPST_FLOW. */
 struct ofp_flow_stats_request {
@@ -765,7 +765,7 @@ struct ofp_flow_stats_request {
                                  as an output port.  A value of OFPP_NONE
                                  indicates no restriction. */
 };
-OFP_ASSERT(sizeof(struct ofp_flow_stats_request) == 56);
+//OFP_ASSERT(sizeof(struct ofp_flow_stats_request) == 56);
 
 /* Body of reply to OFPST_FLOW request. */
 struct ofp_flow_stats {
@@ -786,7 +786,7 @@ struct ofp_flow_stats {
     ovs_32aligned_be64 byte_count;   /* Number of bytes in flow. */
     struct ofp_action_header actions[0]; /* Actions. */
 };
-OFP_ASSERT(sizeof(struct ofp_flow_stats) == 88);
+//OFP_ASSERT(sizeof(struct ofp_flow_stats) == 88);
 
 /* Reply to OFPST_AGGREGATE request. */
 struct ofp_aggregate_stats_reply {
@@ -796,7 +796,7 @@ struct ofp_aggregate_stats_reply {
     ovs_be32 flow_count;      /* Number of flows. */
     uint8_t pad[4];           /* Align to 64 bits. */
 };
-OFP_ASSERT(sizeof(struct ofp_aggregate_stats_reply) == 36);
+//OFP_ASSERT(sizeof(struct ofp_aggregate_stats_reply) == 36);
 
 /* Body of reply to OFPST_TABLE request. */
 struct ofp_table_stats {
@@ -811,7 +811,7 @@ struct ofp_table_stats {
     ovs_32aligned_be64 lookup_count;  /* # of packets looked up in table. */
     ovs_32aligned_be64 matched_count; /* Number of packets that hit table. */
 };
-OFP_ASSERT(sizeof(struct ofp_table_stats) == 64);
+//OFP_ASSERT(sizeof(struct ofp_table_stats) == 64);
 
 /* Stats request of type OFPST_PORT. */
 struct ofp_port_stats_request {
@@ -821,7 +821,7 @@ struct ofp_port_stats_request {
                                 or for all ports (port_no == OFPP_NONE). */
     uint8_t pad[6];
 };
-OFP_ASSERT(sizeof(struct ofp_port_stats_request) == 20);
+//OFP_ASSERT(sizeof(struct ofp_port_stats_request) == 20);
 
 /* Body of reply to OFPST_PORT request. If a counter is unsupported, set
  * the field to all ones. */
@@ -845,7 +845,7 @@ struct ofp_port_stats {
     ovs_32aligned_be64 rx_crc_err;   /* Number of CRC errors. */
     ovs_32aligned_be64 collisions;   /* Number of collisions. */
 };
-OFP_ASSERT(sizeof(struct ofp_port_stats) == 104);
+//OFP_ASSERT(sizeof(struct ofp_port_stats) == 104);
 
 /* All ones is used to indicate all queues in a port (for stats retrieval). */
 #define OFPQ_ALL      0xffffffff
@@ -857,7 +857,7 @@ struct ofp_queue_stats_request {
     uint8_t pad[2];          /* Align to 32-bits. */
     ovs_be32 queue_id;       /* All queues if OFPQ_ALL. */
 };
-OFP_ASSERT(sizeof(struct ofp_queue_stats_request) == 20);
+//OFP_ASSERT(sizeof(struct ofp_queue_stats_request) == 20);
 
 /* Body for stats reply of type OFPST_QUEUE consists of an array of this
  * structure type. */
@@ -869,7 +869,7 @@ struct ofp_queue_stats {
     ovs_32aligned_be64 tx_packets; /* Number of transmitted packets. */
     ovs_32aligned_be64 tx_errors;  /* # of packets dropped due to overrun. */
 };
-OFP_ASSERT(sizeof(struct ofp_queue_stats) == 32);
+//OFP_ASSERT(sizeof(struct ofp_queue_stats) == 32);
 
 /* Vendor extension stats message. */
 struct ofp_vendor_stats_msg {
@@ -880,7 +880,7 @@ struct ofp_vendor_stats_msg {
                                  *   consortium. */
     /* Followed by vendor-defined arbitrary additional data. */
 };
-OFP_ASSERT(sizeof(struct ofp_vendor_stats_msg) == 16);
+//OFP_ASSERT(sizeof(struct ofp_vendor_stats_msg) == 16);
 
 /* Vendor extension. */
 struct ofp_vendor_header {
@@ -897,6 +897,6 @@ struct ofp_vendor_header {
 
     /* Vendor-defined arbitrary additional data. */
 };
-OFP_ASSERT(sizeof(struct ofp_vendor_header) == 24);
+//OFP_ASSERT(sizeof(struct ofp_vendor_header) == 24);
 
 #endif /* openflow/openflow.h */
