@@ -1,0 +1,5 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <Windows.h>
+void dump_16(const u_char *buffer,int start, int finish);
+void dump(const u_char *buffer,int start,int finish);
