@@ -99,7 +99,8 @@ int main()
                 servermessage[0] =buffer[0];
                 servermessage[1] =OFPT_PACKET_OUT;
                 servermessage[2] =buffer[2];
-                servermessage[3] =0x08;
+                servermessage[3] =buffer[13]+24;
+                printf("packet len: %d\r\n",servermessage[3]);
                 servermessage[4] =buffer[4];
                 servermessage[5] =buffer[5];
                 servermessage[6] =buffer[6];
@@ -117,7 +118,7 @@ int main()
                 printf("in_port         : %02x%02x\r\n",servermessage[12],servermessage[13]);
                 //actions_length: 2
                 servermessage[14] =0x00;
-                servermessage[15] =0x08+buffer[13];
+                servermessage[15] =0x08;
                 printf("actions_length  : %02x%02x\r\n",servermessage[14],servermessage[15]);
                 //ofp_action_header
                 //type: 2
@@ -126,7 +127,7 @@ int main()
                 printf("action_type     : %02x%02x\r\n",servermessage[16],servermessage[17]);
                 //len: 2
                 servermessage[18] =0x00;
-                servermessage[19] =0x08+buffer[13];
+                servermessage[19] =0x08;
                 printf("actions_len     : %02x%02x\r\n",servermessage[18],servermessage[19]);
                 //pad: 4
                 servermessage[20] = 0x00;
