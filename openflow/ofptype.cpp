@@ -1,42 +1,4 @@
-#include <stdio.h>
-enum ofp_type {
-	/* Immutable messages. */
-    OFPT_HELLO,               /* Symmetric message */
-    OFPT_ERROR,               /* Symmetric message */
-    OFPT_ECHO_REQUEST,        /* Symmetric message */
-    OFPT_ECHO_REPLY,          /* Symmetric message */
-    OFPT_VENDOR,              /* Symmetric message */
-
-    /* Switch configuration messages. */
-    OFPT_FEATURES_REQUEST,    /* Controller/switch message */
-    OFPT_FEATURES_REPLY,      /* Controller/switch message */
-    OFPT_GET_CONFIG_REQUEST,  /* Controller/switch message */
-    OFPT_GET_CONFIG_REPLY,    /* Controller/switch message */
-    OFPT_SET_CONFIG,          /* Controller/switch message */
-
-    /* Asynchronous messages. */
-    OFPT_PACKET_IN,           /* Async message */
-    OFPT_FLOW_REMOVED,        /* Async message */
-    OFPT_PORT_STATUS,         /* Async message */
-
-    /* Controller command messages. */
-    OFPT_PACKET_OUT,          /* Controller/switch message */
-    OFPT_FLOW_MOD,            /* Controller/switch message */
-    OFPT_PORT_MOD,            /* Controller/switch message */
-
-    /* Statistics messages. */
-    OFPT_STATS_REQUEST,       /* Controller/switch message */
-    OFPT_STATS_REPLY,         /* Controller/switch message */
-
-    /* Barrier messages. */
-    OFPT_BARRIER_REQUEST,     /* Controller/switch message */
-    OFPT_BARRIER_REPLY,       /* Controller/switch message */
-
-    /* Queue Configuration messages. */
-    OFPT_QUEUE_GET_CONFIG_REQUEST,  /* Controller/switch message */
-    OFPT_QUEUE_GET_CONFIG_REPLY     /* Controller/switch message */
-};
-
+#include "ofptype.h"
 void getOFP_TYPE(unsigned char data){
 	switch(data){
 			
@@ -77,8 +39,4 @@ void getOFP_TYPE(unsigned char data){
 		default: printf("[%02x] UNKNOWN MESSAGE\r\n",data);
 	}
 	return;
-}
-int main(){
-	getOFP_TYPE(0x0a);
-	return 0;
 }

@@ -6,6 +6,7 @@
 #include <errno.h>
 
 #include "openflow/openflow.h"
+#include "openflow/ofptype.h"
 #include "view/dump.h"
 
 #define MY_PORT		6633
@@ -56,34 +57,41 @@ int main()
 		printf("%s:%d connected\n", inet_ntoa(client_addr.sin_addr), ntohs(client_addr.sin_port));
 
 		/*---Echo back anything sent---*/
-	 	servermessage[0] =0x01;
-	 	servermessage[1] =OFPT_HELLO;
-	 	servermessage[2] =0x00;
-	 	servermessage[3] =0x08;
-	 	servermessage[4] =0x00;
-	 	servermessage[5] =0x00;
-	 	servermessage[6] =0x00;
-	 	servermessage[7] =0x00;
-	 	
-		send(clientfd, servermessage, 8, 0);
 	 	// Hello message from switch
 	 	//01 00 00 08 00 00 00 cb
 	 	socklen_t read_size;
 		while((read_size = recv(clientfd, buffer, MAXBUF, 0))>0){
 			printf("%s:%d send\r\n", inet_ntoa(client_addr.sin_addr), ntohs(client_addr.sin_port));
 			dump((unsigned char*)buffer,0,read_size);
-			if(buffer[1]==OFPT_ECHO_REQUEST){
+            getOFP_TYPE(buffer[1]);
+			if(buffer[1]==OFPT_HELLO){
 				servermessage[0] =0x01;
-				servermessage[1] =OFPT_ECHO_REPLY;
+				servermessage[1] =OFPT_HELLO;
 				servermessage[2] =0x00;
 				servermessage[3] =0x08;
 				servermessage[4] =0x00;
 				servermessage[5] =0x00;
 				servermessage[6] =0x00;
 				servermessage[7] =buffer[7];
+                printf("Controller send hello back\r\n");
 				send(clientfd, servermessage, 8, 0);
-			}
-			
+			}else if(buffer[1]==OFPT_ECHO_REQUEST){
+                servermessage[0] =0x01;
+                servermessage[1] =OFPT_ECHO_REPLY;
+                servermessage[2] =0x00;
+                servermessage[3] =0x08;
+                servermessage[4] =0x00;
+                servermessage[5] =0x00;
+                servermessage[6] =0x00;
+                servermessage[7] =buffer[7];
+                printf("Controller send echo reply\r\n");
+                send(clientfd, servermessage, 8, 0);    
+            }else if(buffer[1]==OFPT_PACKET_IN){
+                //struct ofp_packet_in *ofp_packet_in_=(struct ofp_packet_in*)(buffer);          
+                printf("buffer_id: %02x%02x%02x%02x\r\n",buffer[8],buffer[9],buffer[10],buffer[11]);
+                printf("total_len: %02x%02x\r\n",buffer[12],buffer[13]);
+                printf("in_port  : %02x%02x\r\n",buffer[14],buffer[15]);
+            }
 		}
 	 	if(read_size == 0)
 		{
