@@ -65,24 +65,24 @@ int main()
 			dump((unsigned char*)buffer,0,read_size);
             getOFP_TYPE(buffer[1]);
 			if(buffer[1]==OFPT_HELLO){
-				servermessage[0] =0x01;
+				servermessage[0] =buffer[0];
 				servermessage[1] =OFPT_HELLO;
-				servermessage[2] =0x00;
+				servermessage[2] =buffer[2];
 				servermessage[3] =0x08;
-				servermessage[4] =0x00;
-				servermessage[5] =0x00;
-				servermessage[6] =0x00;
+				servermessage[4] =buffer[4];
+				servermessage[5] =buffer[5];
+				servermessage[6] =buffer[6];
 				servermessage[7] =buffer[7];
                 printf("Controller send hello back\r\n");
 				send(clientfd, servermessage, 8, 0);
 			}else if(buffer[1]==OFPT_ECHO_REQUEST){
-                servermessage[0] =0x01;
+                servermessage[0] =buffer[0];
                 servermessage[1] =OFPT_ECHO_REPLY;
-                servermessage[2] =0x00;
-                servermessage[3] =0x08;
-                servermessage[4] =0x00;
-                servermessage[5] =0x00;
-                servermessage[6] =0x00;
+                servermessage[2] =buffer[2];
+                servermessage[3] =buffer[3];
+                servermessage[4] =buffer[4];
+                servermessage[5] =buffer[5];
+                servermessage[6] =buffer[6];
                 servermessage[7] =buffer[7];
                 printf("Controller send echo reply\r\n");
                 send(clientfd, servermessage, 8, 0);    
@@ -91,6 +91,56 @@ int main()
                 printf("buffer_id: %02x%02x%02x%02x\r\n",buffer[8],buffer[9],buffer[10],buffer[11]);
                 printf("total_len: %02x%02x\r\n",buffer[12],buffer[13]);
                 printf("in_port  : %02x%02x\r\n",buffer[14],buffer[15]);
+                printf("reason   : %02x\r\n",buffer[16]);
+                printf("pad      : %02x\r\n",buffer[17]);
+                printf("data     : %02x\r\n",buffer[18]);
+                printf("Controller send message packet out\r\n");
+                //ofp_header
+                servermessage[0] =buffer[0];
+                servermessage[1] =OFPT_PACKET_OUT;
+                servermessage[2] =buffer[2];
+                servermessage[3] =0x08;
+                servermessage[4] =buffer[4];
+                servermessage[5] =buffer[5];
+                servermessage[6] =buffer[6];
+                servermessage[7] =buffer[7];
+                //ofp_packet_out
+                //buffer_id: 4
+                servermessage[8] =buffer[8]; 
+                servermessage[9] =buffer[9];
+                servermessage[10] =buffer[10];
+                servermessage[11] =buffer[11];
+                printf("buffer_id       : %02x%02x%02x%02x\r\n",servermessage[8],servermessage[9],servermessage[10],servermessage[11]);
+                //input port: 2
+                servermessage[12] =buffer[14];
+                servermessage[13] =buffer[15];
+                printf("in_port         : %02x%02x\r\n",servermessage[12],servermessage[13]);
+                //actions_length: 2
+                servermessage[14] =0x00;
+                servermessage[15] =0x08+buffer[13];
+                printf("actions_length  : %02x%02x\r\n",servermessage[14],servermessage[15]);
+                //ofp_action_header
+                //type: 2
+                servermessage[16] =0x00;
+                servermessage[17] =OFPAT_OUTPUT;
+                printf("action_type     : %02x%02x\r\n",servermessage[16],servermessage[17]);
+                //len: 2
+                servermessage[18] =0x00;
+                servermessage[19] =0x08+buffer[13];
+                printf("actions_len     : %02x%02x\r\n",servermessage[18],servermessage[19]);
+                //pad: 4
+                servermessage[20] = 0x00;
+                servermessage[21] = 0x02;
+                servermessage[22] = 0x00;
+                servermessage[23] = 0x00;
+                int z;
+                for(z=0;z<buffer[13];z++){
+                    servermessage[24+z]=buffer[18+z];
+                }
+                printf("data:\r\n");
+                dump((unsigned char*)servermessage,24,buffer[13]+24);
+        
+                send(clientfd, servermessage,buffer[13]+24,0);
             }
 		}
 	 	if(read_size == 0)
