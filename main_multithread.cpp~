@@ -10,7 +10,7 @@
 #include "openflow/ofptype.h"
 #include "view/dump.h"
 
-#define MY_PORT		10001
+#define MY_PORT		6633
 #define MAXBUF		1024
 void *connection_handler(void *clientfd){
 	char servermessage[MAXBUF];
